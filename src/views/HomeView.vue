@@ -19,5 +19,9 @@
 </template>
 
 <script setup lang="ts">
-import MetaSection from "@/components/tape/MetaSection.vue"
+import MetaSection from "@/components/tape/MetaSection.vue";
 </script>
+
+<style scoped>
+
+</style>

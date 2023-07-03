@@ -21,6 +21,8 @@ import NavBar from "@/components/ui/NavBar";
 
 <style lang="scss">
 @import url("./assets/appwork.css");
+@import url("./assets/theme-air.css");  
+@import url("./assets/loyalty.css");
 .layout-content {
   background-color: #f5f5f5;
 }

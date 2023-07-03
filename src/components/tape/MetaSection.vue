@@ -8,7 +8,7 @@
         <div class="table-responsive">
           <table id="rating-meta" class="table card-table m-0">
             <tbody>
-              <tr >
+              <tr>
                 <td class="border-top-0 text-nowrap align-middle text-muted">
                   Всего
                 </td>
@@ -19,14 +19,13 @@
                   285
                 </td>
               </tr>
-              <tr data-rate="5">
+
+              <tr>
                 <td class="border-top-0 text-nowrap align-middle text-muted">
                   5
                 </td>
                 <td class="w-100 border-top-0 align-middle">
-                  <div class="progress" style="height: 4px">
-                    <div class="progress-bar" style="width: 71%"></div>
-                  </div>
+                  <ProgressBar />
                 </td>
                 <td
                   class="border-top-0 text-nowrap align-middle text-muted rate-count"
@@ -34,6 +33,7 @@
                   201
                 </td>
               </tr>
+
               <tr data-rate="4">
                 <td class="border-top-0 text-nowrap align-middle text-muted">
                   4
@@ -96,7 +96,7 @@
               </tr>
               <tr data-rate="0">
                 <td class="border-top-0 text-nowrap align-middle text-muted">
-                  <i title="Без оценки" class="fas fa-ban"></i>
+                  <font-awesome-icon icon="fa-solid fa-ban" />
                 </td>
                 <td class="w-100 border-top-0 align-middle">
                   <div class="progress" style="height: 4px">
@@ -116,3 +116,30 @@
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import ProgressBar from "./ProgressBar.vue";
+
+const getData = async () => {};
+
+const data = {
+  status: 200,
+  meta: {
+    count: 287,
+    has_discuss: 0,
+    has_text: 286,
+    has_answer: 185,
+    rating: [18, 27, 5, 9, 26, 202],
+  },
+};
+</script>
+
+<style scoped>
+.card-header {
+  padding: 0.875rem 1.5rem;
+  padding-bottom: 0.875rem;
+  margin-bottom: 0;
+  background-color: rgba(0, 0, 0, 0);
+  border-bottom: 1px solid rgba(24, 28, 33, 0.06);
+}
+</style>
