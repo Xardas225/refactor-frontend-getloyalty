@@ -2,12 +2,14 @@
   <div class="card">
     <div class="card-body pb-3 pt-0 px-2">
       <div class="card-header pb-1 mx-3">
+        <!-- Заголовок секции -->
         <span>Оценки</span>
       </div>
       <div id="reviews-rating" class="show">
         <div class="table-responsive">
           <table id="rating-meta" class="table card-table m-0">
             <tbody>
+              <!-- Строка для отображения общего количества отзывов -->
               <tr>
                 <td class="border-top-0 text-nowrap align-middle text-muted">
                   Всего
@@ -16,99 +18,29 @@
                   colspan="2"
                   class="border-top-0 text-nowrap text-right align-middle text-muted rate-count"
                 >
-                  285
+                  {{ reviewsStore.meta.count }}
                 </td>
               </tr>
 
-              <tr>
-                <td class="border-top-0 text-nowrap align-middle text-muted">
-                  5
-                </td>
-                <td class="w-100 border-top-0 align-middle">
-                  <ProgressBar />
-                </td>
-                <td
-                  class="border-top-0 text-nowrap align-middle text-muted rate-count"
-                >
-                  201
-                </td>
-              </tr>
-
-              <tr data-rate="4">
-                <td class="border-top-0 text-nowrap align-middle text-muted">
-                  4
-                </td>
-                <td class="w-100 border-top-0 align-middle">
-                  <div class="progress" style="height: 4px">
-                    <div class="progress-bar" style="width: 10%"></div>
-                  </div>
-                </td>
-                <td
-                  class="border-top-0 text-nowrap align-middle text-muted rate-count"
-                >
-                  26
-                </td>
-              </tr>
-              <tr data-rate="3">
-                <td class="border-top-0 text-nowrap align-middle text-muted">
-                  3
-                </td>
-                <td class="w-100 border-top-0 align-middle">
-                  <div class="progress" style="height: 4px">
-                    <div class="progress-bar" style="width: 4%"></div>
-                  </div>
-                </td>
-                <td
-                  class="border-top-0 text-nowrap align-middle text-muted rate-count"
-                >
-                  9
-                </td>
-              </tr>
-              <tr data-rate="2">
-                <td class="border-top-0 text-nowrap align-middle text-muted">
-                  2
-                </td>
-                <td class="w-100 border-top-0 align-middle">
-                  <div class="progress" style="height: 4px">
-                    <div class="progress-bar" style="width: 2%"></div>
-                  </div>
-                </td>
-                <td
-                  class="border-top-0 text-nowrap align-middle text-muted rate-count"
-                >
-                  4
-                </td>
-              </tr>
-              <tr data-rate="1">
-                <td class="border-top-0 text-nowrap align-middle text-muted">
-                  1
-                </td>
-                <td class="w-100 border-top-0 align-middle">
-                  <div class="progress" style="height: 4px">
-                    <div class="progress-bar" style="width: 10%"></div>
-                  </div>
-                </td>
-                <td
-                  class="border-top-0 text-nowrap align-middle text-muted rate-count"
-                >
-                  26
-                </td>
-              </tr>
-              <tr data-rate="0">
-                <td class="border-top-0 text-nowrap align-middle text-muted">
-                  <font-awesome-icon icon="fa-solid fa-ban" />
-                </td>
-                <td class="w-100 border-top-0 align-middle">
-                  <div class="progress" style="height: 4px">
-                    <div class="progress-bar" style="width: 7%"></div>
-                  </div>
-                </td>
-                <td
-                  class="border-top-0 text-nowrap align-middle text-muted rate-count"
-                >
-                  19
-                </td>
-              </tr>
+              <!-- Цикл для отображения рейтинга и прогресса -->
+              <template
+                v-for="(score, index) in reviewsStore.meta.rating"
+                :key="score"
+              >
+                <tr>
+                  <td class="border-top-0 text-nowrap align-middle text-muted">
+                    {{ getScore(index) }}
+                  </td>
+                  <td class="w-100 border-top-0 align-middle">
+                    <ProgressBar :value="getProgressValue(score)" />
+                  </td>
+                  <td
+                    class="border-top-0 text-nowrap align-middle text-muted rate-count"
+                  >
+                    {{ score }}
+                  </td>
+                </tr>
+              </template>
             </tbody>
           </table>
         </div>
@@ -118,19 +50,26 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from "vue";
 import ProgressBar from "./ProgressBar.vue";
+import { useReviewsStore } from "@/store/reviews-store";
 
-const getData = async () => {};
+// Использование хранилища отзывов
+const reviewsStore = useReviewsStore();
 
-const data = {
-  status: 200,
-  meta: {
-    count: 287,
-    has_discuss: 0,
-    has_text: 286,
-    has_answer: 185,
-    rating: [18, 27, 5, 9, 26, 202],
-  },
+// Получение метаданных при монтировании компонента
+onMounted(async () => {
+  await reviewsStore.fetchMetaData();
+});
+
+// Функция для получения значения прогресса
+const getProgressValue = (score: number): number => {
+  return (score / reviewsStore.meta.count) * 100;
+};
+
+// Функция для получения рейтинга
+const getScore = (index: number): number | string => {
+  return reviewsStore.meta.rating.length - (index + 1);
 };
 </script>
 
