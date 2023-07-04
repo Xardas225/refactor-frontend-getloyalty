@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card border-0">
     <div class="card-body pb-3 pt-0 px-2">
       <div class="card-header pb-1 mx-3">
         <!-- Заголовок секции -->
@@ -17,9 +17,8 @@
                 <td
                   colspan="2"
                   class="border-top-0 text-nowrap text-right align-middle text-muted rate-count"
-                >
-                  {{ reviewsStore.meta.count }}
-                </td>
+                  v-html="reviewsStore.meta.count"
+                ></td>
               </tr>
 
               <!-- Цикл для отображения рейтинга и прогресса -->
@@ -28,17 +27,17 @@
                 :key="score"
               >
                 <tr>
-                  <td class="border-top-0 text-nowrap align-middle text-muted">
-                    {{ getScore(index) }}
-                  </td>
+                  <td
+                    class="border-top-0 text-nowrap align-middle text-muted"
+                    v-html="getScore(index)"
+                  ></td>
                   <td class="w-100 border-top-0 align-middle">
                     <ProgressBar :value="getProgressValue(score)" />
                   </td>
                   <td
                     class="border-top-0 text-nowrap align-middle text-muted rate-count"
-                  >
-                    {{ score }}
-                  </td>
+                    v-html="score"
+                  ></td>
                 </tr>
               </template>
             </tbody>

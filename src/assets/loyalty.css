@@ -1,3 +1,14 @@
+body {
+  font-family: 'Open Sans', sans-serif;
+  font-family: 'Roboto', sans-serif;
+  font-size: .894rem !important;
+  font-weight: 400 !important;
+  line-height: 1.47 !important;
+  color: #4E5155 !important;
+  text-align: left !important;
+  background-color: #fff !important;
+}
+
 /* SCROLL */
 #scrollTop
 {
