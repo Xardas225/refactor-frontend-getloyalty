@@ -21,14 +21,14 @@ const formData = reactive({
         />
         <BaseInput
           labelText="Новый пароль"
-          inputType="text"
+          inputType="password"
           :disabled="true"
           placeholder="Введите новый пароль"
           v-model:input="formData.newPassword"
         />
         <BaseInput
           labelText="Подтвердите новый пароль"
-          inputType="text"
+          inputType="password"
           :disabled="true"
           placeholder="Введите повторно новый пароль"
           v-model:input="formData.repNewPassword"
