@@ -11,6 +11,10 @@ const props = defineProps({
     type: String, 
     default: ''
   },
+  disabled: {
+    type: Boolean, 
+    default: false
+  },
   input: String,
 })
 
@@ -33,6 +37,7 @@ const inputComputed = computed({
       :type="inputType"
       class="form-control"
       :placeholder="placeholder"
+      :disabled="disabled"
       v-model="inputComputed"
     />
   </div>

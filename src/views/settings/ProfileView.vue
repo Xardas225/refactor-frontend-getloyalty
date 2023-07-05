@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import GeneralSection from '../../components/profile/GeneralSection.vue';
+import SecuritySection from '../../components/profile/SecuritySection.vue';
 import BreadCrumbs from "@/components/ui/BreadCrumbs.vue";
 
 const breadcrumbData = [
@@ -19,5 +20,6 @@ const breadcrumbData = [
   <BreadCrumbs :items="breadcrumbData"/>
   <div class="tab-content card">
     <GeneralSection />
+    <SecuritySection />
   </div>
 </template>
