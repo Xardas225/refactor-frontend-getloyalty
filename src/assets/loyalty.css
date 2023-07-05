@@ -9,6 +9,17 @@ body {
   background-color: #fff !important;
 }
 
+input::placeholder {
+  font-size: .894rem !important;
+  font-weight: 400 !important;
+  line-height: 1.47 !important;
+  color: #babbbc !important;
+}
+
+.card {
+  border: none !important;
+}
+
 /* SCROLL */
 #scrollTop
 {
