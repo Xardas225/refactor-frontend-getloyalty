@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// Vue
 import { ref, reactive, onMounted } from "vue";
 // Components
 import GeneralSection from "@/components/profile/GeneralSection.vue";

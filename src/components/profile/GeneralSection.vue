@@ -1,5 +1,8 @@
 <script setup lang="ts">
+// Vue
 import { reactive } from "vue";
+// Components
+import BaseButton from "../ui/BaseButton.vue";
 import BaseInput from "@/components/ui/BaseInput.vue";
 // Store
 import { useProfileStore } from "@/store/profile-store";
@@ -13,6 +16,10 @@ const formData = reactive({
   lastName: lastName,
   position: position,
 });
+
+const save = async () => {
+  
+}
 </script>
 
 <template>
@@ -43,6 +50,16 @@ const formData = reactive({
           placeholder="Укажите должность"
           v-model:input="formData.position"
         />
+        <div class="d-flex justify-content-end">
+          <BaseButton
+            @click="save"
+            class="mr-2"
+            type="button"
+            btnText="Сохранить"
+            tag="primary"
+          />
+          <BaseButton type="button" btnText="Отмена" tag="default" />
+        </div>
       </div>
     </div>
   </div>
