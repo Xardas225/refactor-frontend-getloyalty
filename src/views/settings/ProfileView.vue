@@ -1,10 +1,19 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import GeneralSection from "../../components/profile/GeneralSection.vue";
-import SecuritySection from "../../components/profile/SecuritySection.vue";
-import CompanySection from "../../components/profile/CompanySection.vue";
-import NavBarSection from "../../components/profile/NavBarSection.vue";
+import { ref, reactive, onMounted } from "vue";
+// Components
+import GeneralSection from "@/components/profile/GeneralSection.vue";
+import SecuritySection from "@/components/profile/SecuritySection.vue";
+import CompanySection from "@/components/profile/CompanySection.vue";
+import NavBarSection from "@/components/profile/NavBarSection.vue";
 import BreadCrumbs from "@/components/ui/BreadCrumbs.vue";
+// Store
+import { useProfileStore } from "@/store/profile-store";
+const store = useProfileStore();
+
+onMounted(async () => {
+  await store.getData()
+  console.log(store.data);
+})
 
 const breadcrumbData = [
   {
@@ -17,7 +26,7 @@ const breadcrumbData = [
   },
 ];
 
-const navBarData = [
+const navBarData = reactive([
   {
     title: 'Основные данные',
     active: true,
@@ -25,15 +34,15 @@ const navBarData = [
   },
   {
     title: 'Смена пароля',
-    active: true,
+    active: false,
     component: SecuritySection
   },
   {
     title: 'Компания',
-    active: true,
+    active: false,
     component: CompanySection
   }
-]
+])
 
 const activeComponent = ref(GeneralSection);
 

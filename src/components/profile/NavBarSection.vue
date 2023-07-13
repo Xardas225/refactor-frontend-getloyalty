@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { defineProps } from "vue";
+import { DefineComponent, defineProps } from "vue";
 
 interface NavBarSectionInterface {
-  title: string,
-  active: boolean,
-  component: string
+  title: string;
+  active: boolean;
+  component: DefineComponent;
 }
 
 const props = defineProps<{
-  items: Array<NavBarSectionInterface>
+  items: Array<NavBarSectionInterface>;
 }>();
 </script>
 
@@ -24,8 +24,14 @@ const props = defineProps<{
     </button>
     <div class="collapse navbar-collapse" id="navbar-sections">
       <ul class="nav navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link active" data-toggle="tab">Основные данные</a>
+        <li v-for="item in items" :key="item.title" class="nav-item">
+          <a
+            @click.stop.prevent="$emit('changeComponent', item.component)"
+            class="nav-link"
+            :class="{active: item.active}"
+            data-toggle="tab"
+            >{{ item.title }}</a
+          >
         </li>
       </ul>
     </div>
