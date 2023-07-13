@@ -1,6 +1,9 @@
 <script setup lang="ts">
+// Vue
 import { reactive } from "vue";
+// Components
 import BaseInput from "@/components/ui/BaseInput.vue";
+// Store
 
 const formData = reactive({
   company: "",

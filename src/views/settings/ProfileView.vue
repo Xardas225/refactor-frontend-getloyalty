@@ -11,52 +11,47 @@ import { useProfileStore } from "@/store/profile-store";
 const store = useProfileStore();
 
 onMounted(async () => {
-  await store.getData()
-  console.log(store.data);
-})
-
-const breadcrumbData = [
-  {
-    title: "Настройки",
-    active: false,
-  },
-  {
-    title: "Профиль",
-    active: true,
-  },
-];
+  await store.setData();
+});
 
 const navBarData = reactive([
   {
-    title: 'Основные данные',
+    title: "Основные данные",
     active: true,
-    component: GeneralSection
+    component: GeneralSection,
   },
   {
-    title: 'Смена пароля',
+    title: "Смена пароля",
     active: false,
-    component: SecuritySection
+    component: SecuritySection,
   },
   {
-    title: 'Компания',
+    title: "Компания",
     active: false,
-    component: CompanySection
-  }
-])
+    component: CompanySection,
+  },
+]);
 
 const activeComponent = ref(GeneralSection);
 
-const changeComponent = (component: any):void => {
+const changeComponent = (component: any): void => {
   activeComponent.value = component;
-}
+};
 </script>
 
 <template>
-  <BreadCrumbs :items="breadcrumbData" />
-  <NavBarSection :items="navBarData" @changeComponent="changeComponent"/>
-  <div class="tab-content card">
-    <keep-alive>
-      <component :is="activeComponent"></component>
-    </keep-alive>
+  <div class="m-auto" v-if="!store.data">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+  <div v-else>
+    <BreadCrumbs :items="store.breadcrumbs" />
+    <NavBarSection :items="navBarData" @changeComponent="changeComponent" />
+    <div class="tab-content card">
+      <keep-alive>
+        <component :is="activeComponent"></component>
+      </keep-alive>
+    </div>
   </div>
 </template>

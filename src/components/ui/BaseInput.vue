@@ -42,3 +42,9 @@ const inputComputed = computed({
     />
   </div>
 </template>
+
+<style scoped>
+.form-control {
+  font-size: .894rem;
+}
+</style>

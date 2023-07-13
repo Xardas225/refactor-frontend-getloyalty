@@ -1,12 +1,17 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import BaseInput from "@/components/ui/BaseInput.vue";
+// Store
+import { useProfileStore } from "@/store/profile-store";
+const store = useProfileStore();
+
+const { login, firstName, lastName, position } = store.getGeneralData;
 
 const formData = reactive({
-  login: "",
-  firstName: "",
-  lastName: "",
-  position: "",
+  login: login,
+  firstName: firstName,
+  lastName: lastName,
+  position: position,
 });
 </script>
 
