@@ -1,12 +1,15 @@
 <script setup lang="ts">
 // Vue
-import { reactive } from "vue";
+import { reactive, computed } from "vue";
 // Components
 import BaseInput from "@/components/ui/BaseInput.vue";
 import BaseButton from "@/components/ui/BaseButton.vue";
 // Store
 import { useProfileStore } from "@/store/profile-store";
 const store = useProfileStore();
+// Validate
+import useVuelidate from "@vuelidate/core";
+import { required } from "@vuelidate/validators";
 
 const { company, industry } = store.getCompanyData;
 
@@ -15,9 +18,24 @@ const formData = reactive({
   industry: industry,
 });
 
+const rules = computed(() => {
+  return {
+    company: { required },
+    industry: { required },
+  };
+});
+
+const v$ = useVuelidate(rules, formData);
+
 const save = () => {
-  console.log('click');
-}
+  v$.value.$validate();
+  if(v$.value.$error) {
+    console.error("Company`s form isn`t validated");
+    return;
+  }
+
+  // send data logic
+};
 </script>
 
 <template>
@@ -29,12 +47,14 @@ const save = () => {
           inputType="text"
           placeholder="Введите название компании"
           v-model:input="formData.company"
+          :error="v$.company.$invalid"
         />
         <BaseInput
           labelText="Отрасль"
           inputType="text"
           :disabled="true"
           v-model:input="formData.industry"
+          :error="v$.industry.$invalid"
         />
         <div class="d-flex justify-content-end">
           <BaseButton
@@ -44,7 +64,6 @@ const save = () => {
             btnText="Сохранить"
             tag="primary"
           />
-          <BaseButton type="button" btnText="Отмена" tag="default" />
         </div>
       </div>
     </div>

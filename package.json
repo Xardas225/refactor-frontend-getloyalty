@@ -26,6 +26,7 @@
     "json-server": "^0.17.3",
     "pinia": "^2.1.4",
     "vue": "^3.2.13",
+    "vue-advanced-cropper": "^2.8.8",
     "vue-chartjs": "^5.2.0",
     "vue-class-component": "^8.0.0-0",
     "vue-moment": "^4.1.0",

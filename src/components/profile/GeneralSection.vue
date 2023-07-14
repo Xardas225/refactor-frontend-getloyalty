@@ -1,9 +1,11 @@
 <script setup lang="ts">
 // Vue
-import { reactive, computed } from "vue";
+import { ref, reactive, computed } from "vue";
 // Components
-import BaseButton from "../ui/BaseButton.vue";
+import BaseButton from "@/components/ui/BaseButton.vue";
 import BaseInput from "@/components/ui/BaseInput.vue";
+import ShowCropperButton from "@/components/ui/сropper/ShowCropperButton.vue";
+import CropperModal from "@/components/ui/сropper/CropperModal.vue";
 // Store
 import { useProfileStore } from "@/store/profile-store";
 const store = useProfileStore();
@@ -37,15 +39,39 @@ const save = async () => {
   v$.value.$validate();
   if (v$.value.$error) {
     console.log("Error validation");
+    return;
   }
 
   store.saveGeneralData(formData);
 };
+
+const cropperModal = ref()
+
+const showModal = () => {
+  cropperModal.value.show()
+}
 </script>
 
 <template>
   <div class="tab-pane fade show active settings-section">
     <div class="p-0">
+      <div class="card p-2 mb-4 d-flex flex-row justify-content-start">
+        <img src="" id="profile_avatar">
+        <div class="card-body ml-4">
+          <ShowCropperButton
+            @showModal="showModal"
+            btnText="Загрузить новое фото"
+            type="button"
+            tag="outline-primary"
+          />
+          <teleport to='body'>
+            <CropperModal
+              ref="cropperModal"
+            />
+          </teleport>
+        </div>
+        <hr class="border-light m-0">
+      </div>
       <div class="card-body">
         <BaseInput
           labelText="Логин"
@@ -89,3 +115,9 @@ const save = async () => {
     </div>
   </div>
 </template>
+
+<style scoped>
+#profile_avatar {
+  width: 100px;
+}
+</style>

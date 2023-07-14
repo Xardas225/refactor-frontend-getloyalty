@@ -2,16 +2,17 @@
 import { defineProps, defineEmits, withDefaults, toRefs, computed } from "vue"
 
 interface BaseInput {
-  labelText: string;
-  inputType: 'text' | 'password' | 'email' | 'number' | undefined;
-  placeholder: string;
+  labelText?: string;
+  inputType: 'text' | 'password' | 'email' | 'number' | 'file' | undefined;
+  placeholder?: string;
   disabled?: boolean;
   input: string | undefined;
-  error: boolean;
+  error?: boolean;
 }
 
 const props = withDefaults(defineProps<BaseInput>(), {
   error: false,
+  placeholder: ''
 }) 
 
 const { input } = toRefs(props);
@@ -43,5 +44,6 @@ const inputComputed = computed({
 <style scoped>
 .form-control {
   font-size: .894rem;
+  border: 1px solid rgba(24,28,33,0.1);
 }
 </style>
