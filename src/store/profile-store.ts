@@ -52,7 +52,7 @@ export const useProfileStore = defineStore('profile', {
   actions: {
     async setData(): Promise<void> {
       try {
-        const { data } = await axios.post('/api/profile')
+        const { data } = await axios.get('/api/profile')
         this.data = this.prepareData(data[0]);
       } catch (error) {
         throw new Error("Abort get data profile");
@@ -70,6 +70,15 @@ export const useProfileStore = defineStore('profile', {
       } catch (error: any) {
         throw new Error(`Prepare profile data aborted with message ${error.message}`)
       }
+    },
+    async saveGeneralData(data: GeneralProfileData):Promise<void> {
+      try {
+        console.log(JSON.stringify(data));
+        
+        axios.post('/api/profile', JSON.stringify(data))
+      } catch (error:any) {
+        throw new Error(`Aborted save general data with error message ${error.message}`);
+      }
     }
   },
   getters: {
@@ -83,8 +92,8 @@ export const useProfileStore = defineStore('profile', {
     },
     getCompanyData(): CompanyProfileData {
       return ({
-        company: '',
-        industry: ''
+        company: 'Компания 1',
+        industry: 'Автобизнес'
       })
     }
   }

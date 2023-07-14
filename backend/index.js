@@ -24,7 +24,7 @@ app.use(express.json());
 
 app.use(cors());
 
-app.post("/api/profile", (req, res) => {
+app.get("/api/profile", (_, res) => {
   connection.query(
     "SELECT * FROM user WHERE fk_company = 5",
     function (err, results) {
@@ -35,6 +35,21 @@ app.post("/api/profile", (req, res) => {
       }
     }
   );
+});
+
+app.post("/api/profile", (req, res) => {
+  console.log(req, res);
+  res.status(200)
+  // connection.query(
+  //   "SELECT * FROM user WHERE fk_company = 5",
+  //   function (err, results) {
+  //     if (err) {
+  //       throw new Error(err);
+  //     } else {
+  //       res.status(200).json(results);
+  //     }
+  //   }
+  // );
 });
 
 app.listen(PORT, () => console.log("SERVER STARTED"));
