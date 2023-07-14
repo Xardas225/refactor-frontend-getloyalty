@@ -17,9 +17,7 @@ const formData = reactive({
   position: position,
 });
 
-const save = async () => {
-  
-}
+const save = async () => {};
 </script>
 
 <template>

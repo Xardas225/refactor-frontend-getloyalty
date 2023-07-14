@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // Vue
-import { ref, reactive, onMounted } from "vue";
+import { DefineComponent, ref, reactive, onMounted, isReactive } from "vue";
 // Components
 import GeneralSection from "@/components/profile/GeneralSection.vue";
 import SecuritySection from "@/components/profile/SecuritySection.vue";
@@ -15,7 +15,7 @@ onMounted(async () => {
   await store.setData();
 });
 
-const navBarData = reactive([
+let navBarData = reactive([
   {
     title: "Основные данные",
     active: true,
@@ -51,8 +51,22 @@ const changeComponent = (component: any): void => {
     <NavBarSection :items="navBarData" @changeComponent="changeComponent" />
     <div class="tab-content card">
       <keep-alive>
-        <component :is="activeComponent"></component>
+        <Transition name="section" mode="out-in">
+          <component :is="activeComponent"></component>
+        </Transition>
       </keep-alive>
     </div>
   </div>
 </template>
+
+<style scoped>
+.section-enter-active,
+.section-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.section-enter-from,
+.section-leave-to {
+  opacity: 0;
+}
+</style>

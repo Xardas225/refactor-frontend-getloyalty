@@ -30,6 +30,11 @@ interface GeneralProfileData {
   position: string | undefined;
 }
 
+interface CompanyProfileData {
+  company: string;
+  industry: string;
+}
+
 export const useProfileStore = defineStore('profile', {
   state: () => ({
     breadcrumbs: [
@@ -74,6 +79,12 @@ export const useProfileStore = defineStore('profile', {
         firstName: this.data?.user_fname,
         lastName: this.data?.user_lname,
         position: this.data?.user_position
+      })
+    },
+    getCompanyData(): CompanyProfileData {
+      return ({
+        company: '',
+        industry: ''
       })
     }
   }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DefineComponent, defineProps } from "vue";
+import { DefineComponent, defineProps, toRefs, defineEmits } from "vue";
 
 interface NavBarSectionInterface {
   title: string;
@@ -7,9 +7,22 @@ interface NavBarSectionInterface {
   component: DefineComponent;
 }
 
+const emit = defineEmits<{
+  (e: "changeComponent", component: DefineComponent): void;
+}>();
+
 const props = defineProps<{
   items: Array<NavBarSectionInterface>;
 }>();
+
+const { items } = toRefs(props);
+
+const changeActiveComponent = (component: DefineComponent): void => {
+  for (let elem of items.value) {
+    elem.component == component ? (elem.active = true) : (elem.active = false);
+  }
+  emit("changeComponent", component);
+};
 </script>
 
 <template>
@@ -25,14 +38,14 @@ const props = defineProps<{
     <div class="collapse navbar-collapse" id="navbar-sections">
       <ul class="nav navbar-nav mr-auto">
         <li v-for="item in items" :key="item.title" class="nav-item">
-          <a
-            @click.stop.prevent="$emit('changeComponent', item.component)"
-            class="nav-link"
-            :class="{active: item.active}"
-            data-toggle="tab"
-            >{{ item.title }}</a
-          >
-        </li>
+            <a
+              @click.stop.prevent="changeActiveComponent(item.component)"
+              class="nav-link"
+              :class="{ active: item.active }"
+              data-toggle="tab"
+              >{{ item.title }}</a
+            >
+          </li>
       </ul>
     </div>
   </nav>
@@ -44,6 +57,7 @@ const props = defineProps<{
   color: #a3a4a6;
 }
 .nav-link {
+  transition: all .2s;
   color: #a3a4a6;
   cursor: pointer;
 }
@@ -51,4 +65,5 @@ const props = defineProps<{
 .nav-link:hover {
   color: #4e5155;
 }
+
 </style>

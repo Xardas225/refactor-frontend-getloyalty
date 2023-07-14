@@ -11,7 +11,9 @@ import NavBar from "@/components/ui/NavBar";
         <NavBar />
         <div class="layout-content">
           <div class="container-fluid flex-grow-1 container-p-y">
-            <router-view />
+            <Transition name="page" mode="out-in">
+              <router-view />
+            </Transition>
           </div>
         </div>
       </div>
@@ -25,6 +27,15 @@ import NavBar from "@/components/ui/NavBar";
 @import url("./assets/loyalty.css");
 .layout-content {
   background-color: #f5f5f5;
+}
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.7s ease;
+}
+
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
 }
 @media (min-width: 962px) {
   .container,
