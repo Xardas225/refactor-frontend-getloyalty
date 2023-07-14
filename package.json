@@ -19,13 +19,16 @@
     "@vue/compiler-sfc": "^3.3.4",
     "axios": "^1.4.0",
     "bootstrap": "^4.6.0",
+    "chart.js": "^4.3.0",
     "core-js": "^3.8.3",
     "json-server": "^0.17.3",
     "pinia": "^2.1.4",
     "vue": "^3.2.13",
+    "vue-chartjs": "^5.2.0",
     "vue-class-component": "^8.0.0-0",
     "vue-moment": "^4.1.0",
-    "vue-router": "^4.0.3"
+    "vue-router": "^4.0.3",
+    "vuelidate": "^0.7.7"
   },
   "devDependencies": {
     "@types/jest": "^27.0.1",
