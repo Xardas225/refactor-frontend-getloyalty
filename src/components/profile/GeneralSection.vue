@@ -4,7 +4,8 @@ import { ref, reactive, computed } from "vue";
 // Components
 import BaseButton from "@/components/ui/BaseButton.vue";
 import BaseInput from "@/components/ui/BaseInput.vue";
-import ShowCropperButton from "@/components/ui/сropper/ShowCropperButton.vue";
+import ShowCropperModalButton from "@/components/ui/сropper/ShowCropperModalButton.vue";
+import DeleteCropperButton from "@/components/ui/сropper/DeleteCropperButton.vue";
 import CropperModal from "@/components/ui/сropper/CropperModal.vue";
 // Store
 import { useProfileStore } from "@/store/profile-store";
@@ -13,9 +14,10 @@ const store = useProfileStore();
 import useVuelidate from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
 
-const { login, firstName, lastName, position } = store.getGeneralData;
+const { avatar, login, firstName, lastName, position } = store.getGeneralData;
 
 const formData = reactive({
+  avatar: avatar,
   login: login,
   firstName: firstName,
   lastName: lastName,
@@ -33,7 +35,7 @@ const rules = computed(() => {
 
 const v$ = useVuelidate(rules, formData);
 
-v$.value.$reset()
+v$.value.$reset();
 
 const save = async () => {
   v$.value.$validate();
@@ -45,33 +47,68 @@ const save = async () => {
   store.saveGeneralData(formData);
 };
 
-const cropperModal = ref()
+const cropperModal = ref();
+const defaultAvatar = "https://via.placeholder.com/250";
 
 const showModal = () => {
-  cropperModal.value.show()
+  cropperModal.value.show();
+};
+
+interface CroppedImageData {
+  file: File;
+  imageUrl: Blob;
+  height: number;
+  width: number;
+  left: number;
+  top: number;
 }
+
+const setCroppedImageData = (data: CroppedImageData) => {
+  formData.avatar = data.imageUrl;
+  store.setAvatar(data.imageUrl);
+};
+
+const deleteCropImage = () => {
+  formData.avatar = defaultAvatar;
+  store.deleteAvatar();
+};
 </script>
 
 <template>
   <div class="tab-pane fade show active settings-section">
     <div class="p-0">
-      <div class="card p-2 mb-4 d-flex flex-row justify-content-start">
-        <img src="" id="profile_avatar">
-        <div class="card-body ml-4">
-          <ShowCropperButton
+      <div
+        class="card p-2 d-flex flex-row justify-content-start align-items-center"
+      >
+        <Transition>
+          <img
+            :src="formData.avatar || defaultAvatar"
+            id="profile_avatar"
+            class="rounded ml-4 my-2"
+          />
+        </Transition>
+        <div class="card-body ml-2">
+          <ShowCropperModalButton
             @showModal="showModal"
             btnText="Загрузить новое фото"
             type="button"
-            tag="outline-primary"
           />
-          <teleport to='body'>
+          <DeleteCropperButton
+            class="ml-2"
+            @click="deleteCropImage"
+            btnText="Удалить фото"
+            type="button"
+            v-if="formData.avatar !== defaultAvatar"
+          />
+          <teleport to="body">
             <CropperModal
               ref="cropperModal"
+              @croppedImageData="setCroppedImageData"
             />
           </teleport>
         </div>
-        <hr class="border-light m-0">
       </div>
+      <hr class="border-light m-0" />
       <div class="card-body">
         <BaseInput
           labelText="Логин"
@@ -119,5 +156,12 @@ const showModal = () => {
 <style scoped>
 #profile_avatar {
   width: 100px;
+}
+.card,
+.nav-tabs-top > .tab-content,
+.nav-tabs-right > .tab-content,
+.nav-tabs-bottom > .tab-content,
+.nav-tabs-left > .tab-content {
+  box-shadow: none !important;
 }
 </style>

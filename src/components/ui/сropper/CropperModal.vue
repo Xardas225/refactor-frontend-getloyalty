@@ -1,10 +1,15 @@
 <script setup lang="ts">
 // Vue
-import { ref, onMounted, defineExpose } from "vue";
+import { ref, onMounted, defineExpose, defineEmits } from "vue";
 // Bootstrap
 import { Modal } from "bootstrap";
 // Components
-import BaseButton from "@/components/ui/BaseButton.vue"
+import BaseButton from "@/components/ui/BaseButton.vue";
+// Cropper
+import { Cropper } from "vue-advanced-cropper";
+import "vue-advanced-cropper/dist/style.css";
+
+const emit = defineEmits(["croppedImageData"]) 
 
 const modalElement = ref(null);
 let modalObj;
@@ -18,6 +23,38 @@ const _show = () => {
 };
 
 defineExpose({ show: _show });
+
+const uploadImage = ref(null);
+const cropper = ref(null);
+const fileInput = ref(null);
+
+const getUploadMessage = (e: Event) => {
+  const file = e.target.files[0];
+  uploadImage.value = URL.createObjectURL(file);
+};
+
+const croppedImageData = {
+  file: null,
+  imageUrl: null,
+  height: null,
+  width: null,
+  left: null,
+  top: null,
+};
+
+const crop = () => {
+  const { coordinates, canvas } = cropper.value.getResult();
+
+  croppedImageData.file = fileInput.value.files[0];
+  croppedImageData.imageUrl = canvas.toDataURL();
+  croppedImageData.height = coordinates.height;
+  croppedImageData.width = coordinates.width;
+  croppedImageData.left = coordinates.left;
+  croppedImageData.top = coordinates.top;
+
+  emit("croppedImageData", croppedImageData);
+  modalObj.hide();
+};
 </script>
 
 <template>
@@ -37,23 +74,27 @@ defineExpose({ show: _show });
         </div>
         <div class="modal-body">
           <div class="input__wrapper position-relative m-4 text-center">
-            <input type="file" id="input_file" class="" />
+            <input
+              ref="fileInput"
+              @change="getUploadMessage"
+              type="file"
+              id="input_file"
+            />
             <label for="input_file" class="input__file-button">
               <span class="input__file-icon-wrapper">
                 <font-awesome-icon width="25" icon="fa-solid fa-upload" />
               </span>
               <span class="input__file-button-text">Выберите файл</span>
             </label>
-            <div class="text-light text-left small mt-1">Загрузите фото в формате JPEG, PNG.</div>
+            <div class="text-light text-left small mt-1">
+              Загрузите фото в формате JPEG, PNG.
+            </div>
           </div>
+          <Cropper ref="cropper" :src="uploadImage" @change="change"/>
         </div>
         <div class="modal-footer">
-          <BaseButton 
-            type="button"
-            btnText="Загрузить"
-            tag="primary"
-          />
-          <BaseButton 
+          <BaseButton @click="crop" v-if="uploadImage" type="button" btnText="Загрузить" tag="primary" />
+          <BaseButton
             type="button"
             btnText="Отмена"
             tag="default"
@@ -100,14 +141,14 @@ defineExpose({ show: _show });
 }
 
 .input__file-button {
-  transition: all .4s;
+  transition: all 0.4s;
   width: 100%;
   max-width: 200px;
   height: 50px;
   background: #fff;
   color: #ff5273;
   border: 1px solid #ff5273;
-  font-size: .894rem;
+  font-size: 0.894rem;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -124,8 +165,7 @@ defineExpose({ show: _show });
   background: #ff5273;
   color: #fff;
 }
-.input__file-button:hover > 
-.input__file-icon-wrapper {
+.input__file-button:hover > .input__file-icon-wrapper {
   border-right: 1px solid #fff;
 }
 </style>
