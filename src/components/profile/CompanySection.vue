@@ -10,6 +10,9 @@ const store = useProfileStore();
 // Validate
 import useVuelidate from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
+// Toast
+import { useToast } from "vue-toastification";
+const toast = useToast();
 
 const { company, industry } = store.getCompanyData;
 
@@ -29,11 +32,11 @@ const v$ = useVuelidate(rules, formData);
 
 const save = () => {
   v$.value.$validate();
-  if(v$.value.$error) {
-    console.error("Company`s form isn`t validated");
+  if (v$.value.$error) {
+    toast.error('Проверьте правильность заполнения данных!')
     return;
   }
-
+  toast.success("Данные успешно сохранены!");
   // send data logic
 };
 </script>

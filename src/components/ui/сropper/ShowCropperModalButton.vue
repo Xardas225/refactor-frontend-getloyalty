@@ -4,7 +4,6 @@ import { defineProps } from "vue";
 const props = defineProps<{
   btnText: string;
   type: "button" | "submit" | "reset" | undefined;
-  tag: string;
 }>();
 </script>
 

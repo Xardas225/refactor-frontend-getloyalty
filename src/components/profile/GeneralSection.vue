@@ -13,6 +13,9 @@ const store = useProfileStore();
 // Validate
 import useVuelidate from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
+// Toast
+import { useToast } from "vue-toastification";
+const toast = useToast();
 
 const { avatar, login, firstName, lastName, position } = store.getGeneralData;
 
@@ -40,11 +43,12 @@ v$.value.$reset();
 const save = async () => {
   v$.value.$validate();
   if (v$.value.$error) {
-    console.log("Error validation");
+    toast.error('Проверьте правильность заполнения данных!')
     return;
   }
 
-  store.saveGeneralData(formData);
+  await store.saveGeneralData(formData);
+  toast.success('Данные успешно сохранены!')
 };
 
 const cropperModal = ref();
@@ -56,7 +60,7 @@ const showModal = () => {
 
 interface CroppedImageData {
   file: File;
-  imageUrl: Blob;
+  imageUrl: string;
   height: number;
   width: number;
   left: number;
@@ -66,6 +70,7 @@ interface CroppedImageData {
 const setCroppedImageData = (data: CroppedImageData) => {
   formData.avatar = data.imageUrl;
   store.setAvatar(data.imageUrl);
+  toast.success('Фото успешно обновлено!')
 };
 
 const deleteCropImage = () => {

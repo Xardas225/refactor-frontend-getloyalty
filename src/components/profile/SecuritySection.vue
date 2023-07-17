@@ -11,6 +11,9 @@ import delayWatch from "vue3-delay-watch";
 // Store
 import { useProfileStore } from "@/store/profile-store";
 const store = useProfileStore();
+// Toast
+import { useToast } from "vue-toastification";
+const toast = useToast();
 
 const formData = reactive({
   curPassword: "",
@@ -26,32 +29,35 @@ const rules = computed(() => {
   };
 });
 
-const v$ = useVuelidate(rules, formData)
+const v$ = useVuelidate(rules, formData);
 
-const isDisabledFields = ref(true)
+const isDisabledFields = ref(true);
 
 const checkOldPass = async () => {
-  await store.checkPass(formData.curPassword)
-  if(store.isPass) isDisabledFields.value = false;
+  await store.checkPass(formData.curPassword);
+  if (store.isPass) isDisabledFields.value = false;
   else isDisabledFields.value = true;
-}
+};
 
 delayWatch(
   () => formData.curPassword,
   () => {
     checkOldPass();
   },
-  2000,
-  () => {}
+  1000,
+  () => {
+    console.log('delay watch');
+  }
 );
 
 const save = () => {
   v$.value.$validate();
   if (v$.value.$error) {
-    console.log("Error validation");
+    toast.error('Проверьте правильность заполнения данных!')
     return;
   }
-}
+  toast.success("Данные успешно сохранены!");
+};
 </script>
 
 <template>
@@ -63,7 +69,7 @@ const save = () => {
           inputType="password"
           placeholder="Введите текущий пароль"
           v-model:input="formData.curPassword"
-          :success="! isDisabledFields"
+          :success="!isDisabledFields"
         />
         <BaseInput
           labelText="Новый пароль"
@@ -79,7 +85,10 @@ const save = () => {
           :disabled="isDisabledFields"
           placeholder="Введите повторно новый пароль"
           v-model:input="formData.confNewPassword"
-          :success="!v$.newPassword.$invalid && formData.newPassword == formData.confNewPassword"
+          :success="
+            !v$.newPassword.$invalid &&
+            formData.newPassword == formData.confNewPassword
+          "
         />
         <div class="d-flex justify-content-end">
           <BaseButton
