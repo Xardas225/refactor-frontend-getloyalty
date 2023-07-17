@@ -8,7 +8,7 @@
     >
       <img
         class="app-brand-logo demo"
-        src="/img/layout/logo.png"
+        src="/favicon.png"
         alt="getloyalty"
       />
       <div class="app-brand-text demo sidenav-text font-weight-semibold ml-2">

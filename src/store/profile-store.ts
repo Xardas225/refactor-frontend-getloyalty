@@ -46,6 +46,7 @@ export const useProfileStore = defineStore("profile", {
       },
     ],
     data: null as ProfileData | null,
+    isPass: false
   }),
   actions: {
     async setData(): Promise<void> {
@@ -79,6 +80,13 @@ export const useProfileStore = defineStore("profile", {
       )
         this.data.avatar = "https://via.placeholder.com/250";
     },
+    checkPass(pass: string) {
+      if(pass === 'develop') {
+        this.isPass = true
+      } else {
+        this.isPass = false
+      }
+    }
   },
   getters: {
     getGeneralData(): GeneralProfileData {
