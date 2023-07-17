@@ -4,6 +4,8 @@ import HomeView from '../views/HomeView.vue';
 // Динамические роуты
 const ReviewsView = () => import('@/views/platform/reviews/ReviewsView.vue')
 const ProfileView = () => import('@/views/settings/ProfileView.vue')
+const ContactsView = () => import('@/views/settings/ContactsView.vue')
+const EmployeesView = () => import('@/views/settings/EmployeesView.vue')
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -20,6 +22,16 @@ const routes: Array<RouteRecordRaw> = [
     path: '/profile',
     name: 'profile',
     component: ProfileView
+  },
+  {
+    path: '/contacts',
+    name: 'contacts',
+    component: ContactsView
+  },
+  {
+    path: '/employees',
+    name: 'employees',
+    component: EmployeesView
   }
 ]
 

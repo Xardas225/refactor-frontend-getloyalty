@@ -11,11 +11,13 @@ import { createPinia } from "pinia";
 const pinia = createPinia();
 import Toast, { PluginOptions } from "vue-toastification";
 import "vue-toastification/dist/index.css";
+import Vue3EasyDataTable from 'vue3-easy-data-table';
+import 'vue3-easy-data-table/dist/style.css';
 
-const toastOptions: PluginOptions = {
-};
+const toastOptions: PluginOptions = {};
 
 createApp(App)
+  .component('EasyDataTable', Vue3EasyDataTable)
   .use(Toast, toastOptions)
   .use(pinia)
   .component("font-awesome-icon", FontAwesomeIcon)
